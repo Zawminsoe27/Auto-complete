@@ -8,11 +8,10 @@ margin:0px auto ;
 .autoCompleteInput{
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
-	width: 85%;
+
 margin-top: 100px;
 }
 .resultContainer{
-width: 85%;
 	background-color: white;
 }
 .productItemContainer{
