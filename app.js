@@ -1,15 +1,17 @@
 const autoCompleteTag = document.querySelector(".autoCompleteInput");
 const resultContainerTag = document.querySelector(".resultContainer");
-let 	 filterProducts = [];
+let filterProducts = [];
 autoCompleteTag.addEventListener("keyup", (e) => {
 	if (e.key === "Enter" || e.key === "ArrowUp" || e.key === "ArrowDown") {
+		navigateAndSelectProducts(e.key);
+		return;
 	}
 	resultContainerTag.innerHTML = "";
 	const searchText = e.target.value.toLowerCase();
 	if (searchText.length === 0) {
 		return;
 	}
-	 filterProducts = products.filter((product) => {
+	filterProducts = products.filter((product) => {
 		return product.title.toLocaleLowerCase().includes(searchText);
 	});
 	const hasProductToShow = filterProducts.length > 0;
@@ -34,11 +36,37 @@ autoCompleteTag.addEventListener("keyup", (e) => {
 function eleCreate(para) {
 	return document.createElement(para);
 }
-let indexToselect = 0;
+let indexToselect = -1;
+
 function navigateAndSelectProducts(key) {
-	if (key === "ArrowUp") {
-	} else if (key === "ArrowDown") {
-		indexToselect += 1
+	if (key === "ArrowDown") {
+		if (indexToselect === filterProducts.length - 1) {
+			indexToselect = -1;
+			deselectProduct()
+		}
+		indexToselect += 1;
+		const productItemContainerToSelect = selectProduct(indexToselect)
+		if (indexToselect > 0) {
+			deselectProduct()
+		}
+		productItemContainerToSelect.classList.add("selected");
+	} else if (key === "ArrowUp") {
+		//expression
 	} else {
+		//expression
 	}
+}
+function selectProduct(index) {
+	const productIdToSelect = filterProducts[index].id.toString();
+	const productItemContainerToSelect =
+		document.getElementById(productIdToSelect);
+	productItemContainerToSelect.style.backgroundColor = "rgb(50,60,240)";
+	productItemContainerToSelect.firstChild.style.color = "white";
+	return productItemContainerToSelect
+}
+function deselectProduct() {
+	const productToDeselected = document.getElementsByClassName("selected")[0];
+	productToDeselected.style.backgroundColor = "white";
+	productToDeselected.firstChild.style.color = "black";
+	productToDeselected.classList.remove("selected")
 }
