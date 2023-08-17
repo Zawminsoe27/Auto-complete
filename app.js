@@ -1,5 +1,6 @@
 const autoCompleteTag = document.querySelector(".autoCompleteInput");
 const resultContainerTag = document.querySelector(".resultContainer");
+const showResultTag = document.querySelector(".showResult");
 let filterProducts = [];
 autoCompleteTag.addEventListener("keyup", (e) => {
 	if (e.key === "Enter" || e.key === "ArrowUp" || e.key === "ArrowDown") {
@@ -42,31 +43,48 @@ function navigateAndSelectProducts(key) {
 	if (key === "ArrowDown") {
 		if (indexToselect === filterProducts.length - 1) {
 			indexToselect = -1;
-			deselectProduct()
+			deselectProduct();
+			return;
 		}
 		indexToselect += 1;
-		const productItemContainerToSelect = selectProduct(indexToselect)
+		const productItemContainerToSelect = selectProduct(indexToselect);
 		if (indexToselect > 0) {
-			deselectProduct()
+			deselectProduct();
 		}
 		productItemContainerToSelect.classList.add("selected");
 	} else if (key === "ArrowUp") {
-		//expression
+		if (indexToselect === -1) {
+			indexToselect = filterProducts.length - 1;
+			const productItemContainerToSelect = selectProduct(indexToselect);
+			productItemContainerToSelect.classList.add("selected");
+			return;
+		}
+		if (indexToselect === 0) {
+			deselectProduct();
+			indexToselect = -1;
+			return;
+		}
+		indexToselect -= 1;
+		deselectProduct();
+		const productItemContainerToSelect = selectProduct(indexToselect);
+		productItemContainerToSelect.classList.add("selected");
 	} else {
-		//expression
+		const selectedProduct = selectProduct(indexToselect);
+
+		console.log(selectedProduct);
 	}
 }
 function selectProduct(index) {
 	const productIdToSelect = filterProducts[index].id.toString();
 	const productItemContainerToSelect =
 		document.getElementById(productIdToSelect);
-	productItemContainerToSelect.style.backgroundColor = "rgb(50,60,240)";
+	productItemContainerToSelect.style.backgroundColor = "rgb(20 20 193 /90%)";
 	productItemContainerToSelect.firstChild.style.color = "white";
-	return productItemContainerToSelect
+	return productItemContainerToSelect;
 }
 function deselectProduct() {
 	const productToDeselected = document.getElementsByClassName("selected")[0];
 	productToDeselected.style.backgroundColor = "white";
 	productToDeselected.firstChild.style.color = "black";
-	productToDeselected.classList.remove("selected")
+	productToDeselected.classList.remove("selected");
 }
